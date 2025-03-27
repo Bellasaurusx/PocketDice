@@ -1,5 +1,6 @@
 package com.example.pocketdice
 
+import com.example.pocketdice.ui.theme.CosmicTheme
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
+            CosmicTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     DiceRollerScreen()
                 }
