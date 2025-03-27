@@ -42,7 +42,8 @@ fun DiceRollerScreen() {
     val context = LocalContext.current
     val mediaPlayer = remember { MediaPlayer.create(context, R.raw.dice_roll) }
     val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-    var diceRoll by remember { mutableStateOf(1) }
+    var diceRoll by remember { mutableIntStateOf(1) }
+    var selectedDie by remember { mutableIntStateOf(20) }
     val coroutineScope = rememberCoroutineScope()
 
     Column(
@@ -51,7 +52,7 @@ fun DiceRollerScreen() {
             .clickable {
                 coroutineScope.launch {
                     scale.animateTo(0.8f, animationSpec = tween(100))
-                    diceRoll = Random.nextInt(1, 21)
+                    diceRoll = Random.nextInt(1, selectedDie + 1)
                     scale.animateTo(1f, animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy))
 
                     mediaPlayer.start()
@@ -66,6 +67,23 @@ fun DiceRollerScreen() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp)
+        ) {
+            listOf(4, 6, 8, 10, 12, 20, 100).forEach { sides ->
+                Button(
+                    onClick = { selectedDie = sides },
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                ) {
+                    Text("d$sides")
+                }
+            }
+        }
+
         Text("Tap to roll", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(16.dp))
         Box(modifier = Modifier.scale(scale.value)) {
